@@ -1,26 +1,60 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ===== Global Reset ===== */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+    box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    background-color: #f0f4fa;
+    color: #0e1013;
+}
+
+
+/* ===== Bizonance Sidebar ===== */
+
+.sidebar {
+    background: linear-gradient(180deg, #3a0ca3 0%, #4361ee 100%);
+    color: white;
+}
+
+
+/* Sidebar nav items */
+
+.nav-item {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.nav-item.active {
+    background: rgba(255, 255, 255, 0.18);
+    border-left: 3px solid #ffffff;
+}
+
+
+/* Icon alignment */
+
+.nav-item i {
+    width: 20px;
+    text-align: center;
+}
+
+
+/* Text spacing */
+
+.nav-item span {
+    margin-left: 6px;
+}
+
+
+/* Logout hover */
+
+.sidebar button:hover {
+    background: rgba(239, 68, 68, 0.25);
 }
