@@ -1,23 +1,31 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Eye,
-  Trash2,
-  RefreshCw,
-  FileSpreadsheet,
-} from "lucide-react";
+import { Eye, Trash2, RefreshCw, FileSpreadsheet } from "lucide-react";
 import { getAllData, deleteData } from "@/lib/storage";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
+// Define type for your data
+type DataItem = {
+  id: string | number;
+  date: string;
+  type: string;
+  company: string;
+  details: string;
+  amount?: number;
+  status: string;
+  submittedBy: string;
+};
+
 export default function ViewDataPage() {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<DataItem[]>([]);
   const [filter, setFilter] = useState("All Data");
 
   /* ================= LOAD ================= */
   const loadData = () => {
-    setData(getAllData());
+    const storedData = getAllData() as DataItem[];
+    setData(storedData);
   };
 
   useEffect(() => {
@@ -34,7 +42,6 @@ export default function ViewDataPage() {
   const exportExcel = () => {
     if (filtered.length === 0) return alert("No data to export");
 
-    // Prepare data for Excel
     const excelData = filtered.map((d) => ({
       Date: d.date,
       Type: d.type,
@@ -45,12 +52,10 @@ export default function ViewDataPage() {
       "Submitted By": d.submittedBy,
     }));
 
-    // Create worksheet and workbook
     const ws = XLSX.utils.json_to_sheet(excelData);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "View Data");
 
-    // Export to Excel
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
     saveAs(blob, "bizonance-view-data.xlsx");
@@ -128,7 +133,7 @@ export default function ViewDataPage() {
                 </tr>
               )}
 
-              {filtered.map((item) => (
+              {filtered.map((item: DataItem) => (
                 <tr key={item.id} className="border-b">
                   <td className="p-3">{item.date}</td>
 
@@ -170,7 +175,7 @@ export default function ViewDataPage() {
                         title="Delete"
                         className="text-red-600 hover:scale-110"
                         onClick={() => {
-                          if (confirm("Delete record?")) {
+                          if (typeof item.id !== "undefined" && confirm("Delete record?")) {
                             deleteData(item.id);
                             loadData();
                           }
