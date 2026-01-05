@@ -3,12 +3,15 @@
 export type ViewDataItem = {
   id: string;
   date: string;
-  type: string; // AMC | Call | New Data | Sales Report
+  type: string;
   company: string;
   details: string;
   amount?: number;
   status: string;
   submittedBy: string;
+
+  // ✅ OPTIONAL (fixes your TypeScript error)
+  fullData?: any;
 };
 
 /* ================= KEY ================= */
@@ -25,6 +28,8 @@ export function getAllData(): ViewDataItem[] {
 /* ================= SAVE ================= */
 
 export function saveData(item: ViewDataItem) {
+  if (typeof window === "undefined") return;
+
   const old = getAllData();
   localStorage.setItem(
     STORAGE_KEY,
@@ -35,6 +40,8 @@ export function saveData(item: ViewDataItem) {
 /* ================= DELETE ================= */
 
 export function deleteData(id: string) {
+  if (typeof window === "undefined") return;
+
   const old = getAllData();
   const updated = old.filter((item) => item.id !== id);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
@@ -43,5 +50,7 @@ export function deleteData(id: string) {
 /* ================= CLEAR ================= */
 
 export function clearAllData() {
+  if (typeof window === "undefined") return;
+
   localStorage.removeItem(STORAGE_KEY);
 }
