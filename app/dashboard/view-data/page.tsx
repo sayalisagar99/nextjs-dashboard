@@ -176,7 +176,8 @@ export default function ViewDataPage() {
                         className="text-red-600 hover:scale-110"
                         onClick={() => {
                           if (typeof item.id !== "undefined" && confirm("Delete record?")) {
-                            deleteData(item.id);
+                            deleteData(String(item.id));
+
                             loadData();
                           }
                         }}
